@@ -1,3 +1,3 @@
 # Reddit Comment App
 
-Displays the most popular comment posted in a subreddit from the last 24 hours.
+Monitors a subreddit over time and displays the most used keywords in the subreddit.

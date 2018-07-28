@@ -15,13 +15,14 @@ class InvalidLimitError(Exception):
 
 class RedditAPI:
 
-    def __init__(self):
+    def __init__(self, subreddit):
         self.__reddit = praw.Reddit(**self._getConfig())
+        self.subreddit = subreddit
 
     def is_read_only(self):
         return self.__reddit.read_only
 
-    def get_hottest_posts(self, subreddit, limit=10):
+    def get_hottest_posts(self, limit=10):
         """
         :param subreddit: String
             Name of subreddit
@@ -33,18 +34,36 @@ class RedditAPI:
         if limit < 0 or not isinstance(limit, int):
             raise InvalidLimitError("Limit must be of type Int and >= 0 ")
         try:
-            submissions = self.__reddit.subreddit(subreddit).hot(limit=limit)
+            submissions = self.__reddit.subreddit(self.subreddit).hot(limit=limit)
         except TypeError:
             raise
         return submissions
 
+    def get_comment_stream(self, pause_after):
+        """
+        Yield new comments as they become available.
+
+        Comments are yielded oldest first. Up to 100 historical comments will initially be returned.
+
+        :pause_after:
+            An integer representing the number of requests that result in no new items before this function yields None
+
+        :return:
+            Generator function containing Comment objects
+        """
+        return self.__reddit.subreddit(self.subreddit).stream.comments(pause_after=pause_after)
+
+
     @staticmethod
     def _getConfig():
         with open(os.path.join(root_dir, 'config.yaml'), 'r') as f:
-            config = yaml.load(f)
-            return config
+            return yaml.load(f)
 
 if __name__ == "__main__":
-    r = RedditAPI()
-    hot_anime = r.get_hottest_posts('anime', -1)
-    print(hot_anime)
+    r = RedditAPI('anime')
+    latest_comments = r.get_comment_stream()
+
+    for comment in latest_comments:
+        if comment is None:
+            break
+        print(comment.body)

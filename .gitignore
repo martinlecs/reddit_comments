@@ -211,6 +211,6 @@ venv.bak/
 ### Python Patch ###
 .venv/
 
-
+*.yaml
 
 # End of https://www.gitignore.io/api/osx,python,intellij
