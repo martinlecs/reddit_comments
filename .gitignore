@@ -10,6 +10,7 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/*
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
@@ -209,6 +210,7 @@ venv.bak/
 
 ### Python Patch ###
 .venv/
+
 
 
 # End of https://www.gitignore.io/api/osx,python,intellij
