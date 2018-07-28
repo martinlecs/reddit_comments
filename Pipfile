@@ -7,6 +7,8 @@ name = "pypi"
 praw = "*"
 pyaml = "*"
 pytest = "*"
+google-cloud-language = "*"
+pandas = "*"
 
 [dev-packages]
 
