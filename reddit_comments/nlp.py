@@ -20,7 +20,7 @@ class NLP:
         """
         :param gen: Comment
              Comment generator function
-        :return: Pd.DataFrame
+        :return: Dict
         """
         df = pd.DataFrame(columns=['name', 'salience', 'score', 'magnitude'])
         for comment in gen:
@@ -32,7 +32,7 @@ class NLP:
                 df = df.append(entry, ignore_index=True)
 
         df = df.groupby('name').mean().reset_index()
-        return df
+        return df.to_dict(orient='records')
 
 
 

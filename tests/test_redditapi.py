@@ -1,6 +1,6 @@
 # Unit tests using Pytest testing framework
 import pytest
-from reddit_comments.redditapi import *
+from reddit_comments.reddit.redditapi import *
 
 
 @pytest.fixture

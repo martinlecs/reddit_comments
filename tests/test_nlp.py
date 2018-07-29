@@ -25,7 +25,5 @@ def test_batch_comment(nlp, expected):
     text = ["The score of a document's sentiment indicates the overall emotion of a document. The magnitude of a document's sentiment indicates how much emotional content is present within the document, and this value is often proportional to the length of the document."]
     gen = (i for i in text)
     output = nlp.comment_batch_analysis(gen)
-    print(output)
-    print(expected)
     assert not pd.testing.assert_frame_equal(output, expected, check_less_precise=True)
 

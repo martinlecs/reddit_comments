@@ -9,6 +9,8 @@ pyaml = "*"
 pytest = "*"
 google-cloud-language = "*"
 pandas = "*"
+flask = "*"
+scrapy = "*"
 
 [dev-packages]
 

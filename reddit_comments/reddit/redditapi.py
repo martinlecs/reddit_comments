@@ -53,6 +53,15 @@ class RedditAPI:
         """
         return self.__reddit.subreddit(self.subreddit).stream.comments(pause_after=pause_after)
 
+    def get_subreddits(self):
+        """
+            Gets list of all Subreddits on Reddit
+        :return: list
+        """
+        #TODO: Have to scrape this information and update it using streams every now and then
+        subreddits = []
+        return subreddits
+
 
     @staticmethod
     def _getConfig():
