@@ -16,19 +16,33 @@ class NLP:
     def analyse_entity_sentiment(self, document):
         return self.__client.analyze_entity_sentiment(document=self._create_document(document), encoding_type='UTF32')
 
+    def comment_batch_analysis(self, gen):
+        """
+        :param gen: Comment
+             Comment generator function
+        :return: Pd.DataFrame
+        """
+        df = pd.DataFrame(columns=['name', 'salience', 'score', 'magnitude'])
+        for comment in gen:
+            if comment is None:
+                break
+            response = self.analyse_entity_sentiment(comment.body)
+            for entity in response.entities:
+                entry = {'name': entity.name, 'salience': entity.salience, 'score': entity.sentiment.score, 'magnitude': entity.sentiment.magnitude}
+                df = df.append(entry, ignore_index=True)
+
+        df = df.groupby('name').mean().reset_index()
+        return df
+
+
+
 
 if __name__ == "__main__":
 
     nlp = NLP()
-    text = "The score of a document's sentiment indicates the overall emotion of a document. The magnitude of a document's sentiment indicates how much emotional content is present within the document, and this value is often proportional to the length of the document."
-    response = nlp.analyse_entity_sentiment(text)
+    text = ["The score of a document's sentiment indicates the overall emotion of a document. The magnitude of a document's sentiment indicates how much emotional content is present within the document, and this value is often proportional to the length of the document."]
+    gen = (i for i in text)
 
-    for entity in response.entities:
-        print('=' * 20)
-        print('         name: {0}'.format(entity.name))
-        print('     metadata: {0}'.format(entity.metadata))
-        print('     salience: {0}'.format(entity.salience))
-        print('     score: {0}'.format(entity.sentiment.score))
-        print('     magnitude: {0}'.format(entity.sentiment.magnitude))
+    df = nlp.comment_batch_analysis(gen)
+    print(df)
 
-    #TODO: return results as a DataFrame
